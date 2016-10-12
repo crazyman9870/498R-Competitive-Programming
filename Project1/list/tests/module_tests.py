@@ -1,8 +1,8 @@
 ''' You will need the following import if using python2 '''
 # from __future__ import absolute_import
 
-from ..unrolledlinkedlist.LL import UnrolledLinkedList
-from ..unrolledlinkedlist.LLNode import Node
+from ..unrolled_linked_list.module import UnrolledLinkedList
+from ..unrolled_linked_list.LLNode import Node
 import unittest
 
 

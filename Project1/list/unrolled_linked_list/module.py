@@ -1,5 +1,5 @@
 import sys
-from ..unrolledlinkedlist.LLNode import Node
+from ..unrolled_linked_list.LLNode import Node
 
 class UnrolledLinkedList():
 
