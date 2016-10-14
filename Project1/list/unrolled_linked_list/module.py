@@ -3,8 +3,8 @@ from ..unrolled_linked_list.LLNode import Node
 
 class UnrolledLinkedList():
 
-	def __init__(self, maxNodeCapacity=16):
-		self.maxNodeCapacity = maxNodeCapacity
+	def __init__(self, max_node_capacity=16):
+		self.max_node_capacity = max_node_capacity
 		self.size = 0
 		self.nodeCount = 0
 		self.head = None
@@ -87,11 +87,9 @@ class UnrolledLinkedList():
 		return False
 
 	def append(self,data):
-		#Base Cases
-		if self.nodeCount == self.maxNodeCapacity:
-			raise Exception('Node max reached')
+		#Base Case
 		if self.head is None:
-			self.head = Node()
+			self.head = Node(self.max_node_capacity)
 			self.head.add(data)
 			self.size = 1
 			self.nodeCount = 1
@@ -103,7 +101,7 @@ class UnrolledLinkedList():
 
 		if temp.isFull():
 			newList = temp.splitNode()
-			temp.next = Node()
+			temp.next = Node(self.max_node_capacity)
 			temp.next.addList(newList)
 			temp.next.add(data)
 			self.size += 1

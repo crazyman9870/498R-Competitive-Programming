@@ -2,8 +2,8 @@ import sys
 
 class Node():
 
-		def __init__(self):
-			self.maxSize = 4
+		def __init__(self, maxSize):
+			self.maxSize = maxSize
 			self.data = []
 			self.next = None
 
@@ -79,7 +79,8 @@ class Node():
 
 		def splitNode(self):
 			if self.isFull():
-				split = [self.data[2], self.data[3]]
-				self.remove()
-				self.remove()
+				split = []
+				newSize = self.size() // 2
+				while self.size() > newSize:
+					split.append(self.removeIndex(newSize))
 				return split
