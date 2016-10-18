@@ -34,6 +34,10 @@ class Node():
 			for x in self.data:
 				yield x
 
+		def __reversed__(self):
+			for x in reversed(self.data):
+				yield x
+
 		def add(self, item):
 			if self.isFull():
 				raise Exception('Node is full')

@@ -292,40 +292,14 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		self.assertFalse(ull.inRange(1,3,-1))
 		self.assertFalse(ull.inRange(1,3,5))
 
-	@unittest.expectedFailure
-	def testReversedOnEmpty(self):
-		ull = UnrolledLinkedList()
-		#Test empty
-		reversed(ull)
-
 	def testReversed(self):
-		ull = UnrolledLinkedList()
-		#Test one item
-		ull.append(1)
-		reversed(ull)
-		self.assertEqual(str(ull), '{[1]}')
-		#Test two items
-		ull.append(2)
-		self.assertEqual(str(ull), '{[1, 2]}')
-		reversed(ull)
-		self.assertEqual(str(ull), '{[2, 1]}')
-		reversed(ull)
-		self.assertEqual(str(ull), '{[1, 2]}')
-		#Test more than 2 items but still 1 node
-		ull.append(3)
-		ull.append(4)
-		self.assertEqual(str(ull), '{[1, 2, 3, 4]}')
-		reversed(ull)
-		self.assertEqual(str(ull), '{[4, 3, 2, 1]}')
-		reversed(ull)
-		self.assertEqual(str(ull), '{[1, 2, 3, 4]}')
-		#Test multiple nodes
 		ull = UnrolledLinkedList()
 		for i in range(25):
 			ull.append(i+1)
-		self.assertEqual(str(ull), '{[1, 2, 3, 4, 5, 6, 7, 8], [9, 10, 11, 12, 13, 14, 15, 16], [17, 18, 19, 20, 21, 22, 23, 24, 25]}')
-		reversed(ull)
-		self.assertEqual(str(ull), '{[25, 24, 23, 22, 21, 20, 19, 18], [17, 16, 15, 14, 13, 12, 11, 10], [9, 8, 7, 6, 5, 4, 3, 2, 1]}')
+		testing = []
+		for x in reversed(ull):
+			testing.append(x)
+		self.assertEqual(str(testing), '[25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]')
 
 	def testIter(self):
 		ull = UnrolledLinkedList()
@@ -335,11 +309,6 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		for x in ull:
 			testing.append(x)
 		self.assertEqual(str(testing), '[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]')
-		testing = []
-		reversed(ull)
-		for x in ull:
-			testing.append(x)
-		self.assertEqual(str(testing), '[25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]')
 
 	@unittest.expectedFailure
 	def testDelItemEmpty(self):

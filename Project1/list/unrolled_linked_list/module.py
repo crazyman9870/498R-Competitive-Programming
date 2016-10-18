@@ -54,24 +54,15 @@ class UnrolledLinkedList():
 		return self.size
 
 	def __reversed__(self):
-		#Base Cases
-		if self.head is None:
-			raise TypeError() 
-		if self.size == 1:
-			return
-
-		temp = self.head
-		items = []
-		while temp is not None:
-			items += temp.data
-			temp = temp.next
-
+		nodes = []
 		temp = self.head
 		while temp is not None:
-			for i in range(len(temp)):
-				temp[i] = items[len(items) - 1]
-				items.pop()
+			nodes.append(temp)
 			temp = temp.next
+		nodes = nodes[::-1]
+		for node in nodes:
+			for x in reversed(node):
+				yield x
 
 	def __contains__(self,obj):
 		#Base Case
