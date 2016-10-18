@@ -48,7 +48,7 @@ class UnrolledLinkedList():
 			string.append(str(temp))
 			#string.append(str(temp))
 			temp = temp.next
-		return '{' + ','.join(str(x) for x in string) + '}'
+		return '{' + ', '.join(str(x) for x in string) + '}'
 
 	def __len__(self):
 		return self.size
@@ -56,7 +56,7 @@ class UnrolledLinkedList():
 	def __reversed__(self):
 		#Base Cases
 		if self.head is None:
-			return
+			raise TypeError() 
 		if self.size == 1:
 			return
 
@@ -138,7 +138,7 @@ class UnrolledLinkedList():
 		#Check to see if the abs of the index is in range
 		if index < 0:
 			index = self.convertNegativeIndex(index)
-		if index >= self.size:
+		if index >= self.size or index < 0:
 			raise IndexError()
 
 		#Find the node

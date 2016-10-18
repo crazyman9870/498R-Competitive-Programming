@@ -1,4 +1,5 @@
 import sys
+import math
 
 class Node():
 
@@ -80,7 +81,7 @@ class Node():
 		def splitNode(self):
 			if self.isFull():
 				split = []
-				newSize = self.size() // 2
+				newSize = math.ceil(self.size() / 2)
 				while self.size() > newSize:
 					split.append(self.removeIndex(newSize))
 				return split

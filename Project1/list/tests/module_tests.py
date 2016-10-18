@@ -114,66 +114,87 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 
 	def testNodeExpansion(self):
 		ull = UnrolledLinkedList()
+		#Fill first node
 		for i in range(16):
 			ull.append(i+1)
+		self.assertEqual(str(ull), '{[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]}')
 		self.assertEqual(len(ull), 16)
 		self.assertEqual(ull.nodeCount, 1)
-		print(ull)
-		ull.append(3)
-		ull.append(4)
-		print(ull)
-	'''
+		#Create first division and fill second node
+		for i in range(16,24):
+			ull.append(i+1)
+		self.assertEqual(str(ull), '{[1, 2, 3, 4, 5, 6, 7, 8], [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]}')
+		self.assertEqual(len(ull), 24)
+		self.assertEqual(ull.nodeCount, 2)
+		#Add one more item to split the node and create 3
+		ull.append(25)
+		self.assertEqual(str(ull), '{[1, 2, 3, 4, 5, 6, 7, 8], [9, 10, 11, 12, 13, 14, 15, 16], [17, 18, 19, 20, 21, 22, 23, 24, 25]}')
+		self.assertEqual(len(ull), 25)
+		self.assertEqual(ull.nodeCount, 3)
+	
 	def testGetNodeFunction(self):
+		#Test one item
 		ull = UnrolledLinkedList()
 		ull.append(1)
 		tup = ull.getNodeIndexByIndex(0)
 		self.assertEqual(tup[1], 0)
-		ull.append(2)
-		tup = ull.getNodeIndexByIndex(1)
-		self.assertEqual(tup[1], 1)
-		ull.append(3)
-		ull.append(4)
-		tup = ull.getNodeIndexByIndex(3)
-		self.assertEqual(tup[1], 3)
-		ull.append(5)
-		ull.append(6)
-		tup = ull.getNodeIndexByIndex(1)
-		self.assertEqual(tup[1], 1)
-		tup = ull.getNodeIndexByIndex(3)
-		self.assertEqual(tup[1], 1)
-		tup = ull.getNodeIndexByIndex(5)
-		self.assertEqual(tup[1], 3)
-		ull.append(7)
-		tup = ull.getNodeIndexByIndex(3)
-		self.assertEqual(tup[1], 1)
-		tup = ull.getNodeIndexByIndex(5)
-		self.assertEqual(tup[1], 1)
+		#Test multiple items
+		ull = UnrolledLinkedList()
+		#Fill first node
+		for i in range(16):
+			ull.append(i+1)
+		tup = ull.getNodeIndexByIndex(0)
+		self.assertEqual(tup[1], 0)
+		tup = ull.getNodeIndexByIndex(8)
+		self.assertEqual(tup[1], 8)
+		tup = ull.getNodeIndexByIndex(15)
+		self.assertEqual(tup[1], 15)
+		#Test between multiple nodes
+		for i in range(16,25):
+			ull.append(i+1)
+		tup = ull.getNodeIndexByIndex(7)
+		self.assertEqual(tup[1], 7)
+		tup = ull.getNodeIndexByIndex(8)
+		self.assertEqual(tup[1], 0)
+		tup = ull.getNodeIndexByIndex(15)
+		self.assertEqual(tup[1], 7)
+		tup = ull.getNodeIndexByIndex(16)
+		self.assertEqual(tup[1], 0)
+		tup = ull.getNodeIndexByIndex(20)
+		self.assertEqual(tup[1], 4)
 
 	def testGetNodeFunctionNegatives(self):
+		#Test one item
 		ull = UnrolledLinkedList()
 		ull.append(1)
 		tup = ull.getNodeIndexByIndex(-1)
 		self.assertEqual(tup[1], 0)
-		ull.append(2)
-		tup = ull.getNodeIndexByIndex(-2)
-		self.assertEqual(tup[1], 0)
-		ull.append(3)
-		ull.append(4)
-		tup = ull.getNodeIndexByIndex(-2)
-		self.assertEqual(tup[1], 2)
-		ull.append(5)
-		ull.append(6)
-		tup = ull.getNodeIndexByIndex(-6)
-		self.assertEqual(tup[1], 0)
-		tup = ull.getNodeIndexByIndex(-4)
-		self.assertEqual(tup[1], 0)
+		#Test multiple items
+		ull = UnrolledLinkedList()
+		#Fill first node
+		for i in range(16):
+			ull.append(i+1)
 		tup = ull.getNodeIndexByIndex(-1)
-		self.assertEqual(tup[1], 3)
-		ull.append(7)
-		tup = ull.getNodeIndexByIndex(-4)
+		self.assertEqual(tup[1], 15)
+		tup = ull.getNodeIndexByIndex(-8)
+		self.assertEqual(tup[1], 8)
+		tup = ull.getNodeIndexByIndex(-16)
+		self.assertEqual(tup[1], 0)
+		#Test between multiple nodes
+		for i in range(16,25):
+			ull.append(i+1)
+		tup = ull.getNodeIndexByIndex(-1)
+		self.assertEqual(tup[1], 8)
+		tup = ull.getNodeIndexByIndex(-8)
 		self.assertEqual(tup[1], 1)
-		tup = ull.getNodeIndexByIndex(-2)
-		self.assertEqual(tup[1], 1)
+		tup = ull.getNodeIndexByIndex(-9)
+		self.assertEqual(tup[1], 0)
+		tup = ull.getNodeIndexByIndex(-10)
+		self.assertEqual(tup[1], 7)
+		tup = ull.getNodeIndexByIndex(-17)
+		self.assertEqual(tup[1], 0)
+		tup = ull.getNodeIndexByIndex(-25)
+		self.assertEqual(tup[1], 0)
 
 	@unittest.expectedFailure
 	def testGetNodeFunctionFailEmpty(self):
@@ -191,58 +212,36 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		ull = UnrolledLinkedList()
 		ull.append(1)
 		tup = ull.getNodeIndexByIndex(-2)
-
+	
 	def testGetItem(self):
 		ull = UnrolledLinkedList()
-		ull.append(1)
+		for i in range(25):
+			ull.append(i+1)
 		item = ull[0]
 		self.assertEqual(item, 1)
-		ull.append(2)
-		item = ull[1]
-		self.assertEqual(item, 2)
-		ull.append(3)
-		ull.append(4)
-		item = ull[3]
-		self.assertEqual(item, 4)
-		ull.append(5)
-		ull.append(6)
-		item = ull[1]
-		self.assertEqual(item, 2)
-		item = ull[3]
-		self.assertEqual(item, 4)
+		item = ull[10]
+		self.assertEqual(item, 11)
+		item = ull[15]
+		self.assertEqual(item, 16)
 		item = ull[5]
 		self.assertEqual(item, 6)
-		ull.append(7)
-		item = ull[3]
-		self.assertEqual(item, 4)
-		item = ull[5]
-		self.assertEqual(item, 6)
+		item = ull[21]
+		self.assertEqual(item, 22)
+		item = ull[24]
+		self.assertEqual(item, 25)
 
 	def testGetItemNegative(self):
 		ull = UnrolledLinkedList()
-		ull.append(1)
+		for i in range(25):
+			ull.append(i+1)
 		item = ull[-1]
+		self.assertEqual(item, 25)
+		item = ull[-25]
 		self.assertEqual(item, 1)
-		ull.append(2)
-		item = ull[-1]
-		self.assertEqual(item, 2)
-		ull.append(3)
-		ull.append(4)
-		item = ull[-1]
-		self.assertEqual(item, 4)
-		ull.append(5)
-		ull.append(6)
-		item = ull[-5]
-		self.assertEqual(item, 2)
-		item = ull[-3]
-		self.assertEqual(item, 4)
-		item = ull[-1]
-		self.assertEqual(item, 6)
-		ull.append(7)
-		item = ull[-4]
-		self.assertEqual(item, 4)
-		item = ull[-2]
-		self.assertEqual(item, 6)
+		item = ull[-8]
+		self.assertEqual(item, 18)
+		item = ull[-16]
+		self.assertEqual(item, 10)
 
 	@unittest.expectedFailure
 	def testGetItemFailEmpty(self):
@@ -263,35 +262,26 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 
 	def testSetItem(self):
 		ull = UnrolledLinkedList()
-		ull.append(1)
-		ull.append(2)
-		ull.append(3)
-		ull.append(4)
-		ull.append(5)
-		ull.append(6)
-		ull.append(7)
-		ull.append(8)
-		self.assertEqual(str(ull), '{[1, 2],[3, 4],[5, 6, 7, 8]}')
-		ull[6] = 100
-		ull[2] = 333
-		ull[-8] = -15
-		ull[-4] = 'A'
-		self.assertEqual(str(ull), '{[-15, 2],[333, 4],[\'A\', 6, 100, 8]}')
+		for i in range(20):
+			ull.append(i+1)
+		#Test first index in first node
+		ull[0] = 100
+		#Test first index in second node
+		ull[8] = 333
+		#Test negative numbers
+		ull[-1] = 'A'
+		ull[-13] = -15.5
+		self.assertEqual(str(ull), '{[100, 2, 3, 4, 5, 6, 7, -15.5], [333, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, \'A\']}')
 
 	def testContains(self):
 		ull = UnrolledLinkedList()
-		ull.append(1)
-		ull.append(2)
-		ull.append(3)
-		ull.append(4)
-		ull.append(5)
-		ull.append(6)
-		ull.append(7)
-		ull.append(8)
-		self.assertEqual(str(ull), '{[1, 2],[3, 4],[5, 6, 7, 8]}')
+		for i in range(20):
+			ull.append(i+1)
 		self.assertTrue(3 in ull)
 		self.assertTrue(7 in ull)
 		self.assertFalse(0 in ull)
+		self.assertTrue(16 in ull)
+		self.assertFalse(21 in ull)
 
 	def testInRange(self):
 		ull = UnrolledLinkedList()
@@ -302,19 +292,26 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		self.assertFalse(ull.inRange(1,3,-1))
 		self.assertFalse(ull.inRange(1,3,5))
 
+	@unittest.expectedFailure
+	def testReversedOnEmpty(self):
+		ull = UnrolledLinkedList()
+		#Test empty
+		reversed(ull)
+
 	def testReversed(self):
 		ull = UnrolledLinkedList()
-		reversed(ull)
-		self.assertEqual(str(ull), '{}')
+		#Test one item
 		ull.append(1)
 		reversed(ull)
 		self.assertEqual(str(ull), '{[1]}')
+		#Test two items
 		ull.append(2)
 		self.assertEqual(str(ull), '{[1, 2]}')
 		reversed(ull)
 		self.assertEqual(str(ull), '{[2, 1]}')
 		reversed(ull)
 		self.assertEqual(str(ull), '{[1, 2]}')
+		#Test more than 2 items but still 1 node
 		ull.append(3)
 		ull.append(4)
 		self.assertEqual(str(ull), '{[1, 2, 3, 4]}')
@@ -322,34 +319,27 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		self.assertEqual(str(ull), '{[4, 3, 2, 1]}')
 		reversed(ull)
 		self.assertEqual(str(ull), '{[1, 2, 3, 4]}')
-		ull.append(5)
-		ull.append(6)
-		ull.append(7)
-		self.assertEqual(str(ull), '{[1, 2],[3, 4],[5, 6, 7]}')
+		#Test multiple nodes
+		ull = UnrolledLinkedList()
+		for i in range(25):
+			ull.append(i+1)
+		self.assertEqual(str(ull), '{[1, 2, 3, 4, 5, 6, 7, 8], [9, 10, 11, 12, 13, 14, 15, 16], [17, 18, 19, 20, 21, 22, 23, 24, 25]}')
 		reversed(ull)
-		self.assertEqual(str(ull), '{[7, 6],[5, 4],[3, 2, 1]}')
-		reversed(ull)
-		self.assertEqual(str(ull), '{[1, 2],[3, 4],[5, 6, 7]}')
+		self.assertEqual(str(ull), '{[25, 24, 23, 22, 21, 20, 19, 18], [17, 16, 15, 14, 13, 12, 11, 10], [9, 8, 7, 6, 5, 4, 3, 2, 1]}')
 
 	def testIter(self):
 		ull = UnrolledLinkedList()
-		ull.append(1)
-		ull.append(2)
-		ull.append(3)
-		ull.append(4)
-		ull.append(5)
-		ull.append(6)
-		ull.append(7)
-		self.assertEqual(str(ull), '{[1, 2],[3, 4],[5, 6, 7]}')
+		for i in range(25):
+			ull.append(i+1)
 		testing = []
 		for x in ull:
 			testing.append(x)
-		self.assertEqual(str(testing), '[1, 2, 3, 4, 5, 6, 7]')
+		self.assertEqual(str(testing), '[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]')
 		testing = []
 		reversed(ull)
 		for x in ull:
 			testing.append(x)
-		self.assertEqual(str(testing), '[7, 6, 5, 4, 3, 2, 1]')
+		self.assertEqual(str(testing), '[25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]')
 
 	@unittest.expectedFailure
 	def testDelItemEmpty(self):
@@ -359,50 +349,35 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 	@unittest.expectedFailure
 	def testDelItemIndexError(self):
 		ull = UnrolledLinkedList()
-		ull.append(0)
-		ull.append(1)
-		ull.append(2)
-		ull.append(3)
-		ull.append(4)
-		ull.append(5)
-		ull.append(6)
+		for i in range(6):
+			ull.append(i+1)
 		del ull[5]
 		del ull[5]
 		del ull[5]
 
 	def testDelItemListSize(self):
 		ull = UnrolledLinkedList()
-		ull.append(0)
-		ull.append(1)
-		ull.append(2)
-		ull.append(3)
-		ull.append(4)
-		ull.append(5)
-		ull.append(6)
-		self.assertEqual(len(ull), 7)
-		del ull[5]
-		self.assertEqual(len(ull), 6)
-		del ull[5]
-		self.assertEqual(len(ull), 5)
+		for i in range(20):
+			ull.append(i+1)
+		self.assertEqual(len(ull), 20)
+		del ull[9]
+		self.assertEqual(len(ull), 19)
+		del ull[16]
+		self.assertEqual(len(ull), 18)
 		del ull[2]
-		self.assertEqual(len(ull), 4)
+		self.assertEqual(len(ull), 17)
 
 	def testDelItemListSizeNegative(self):
 		ull = UnrolledLinkedList()
-		ull.append(0)
-		ull.append(1)
-		ull.append(2)
-		ull.append(3)
-		ull.append(4)
-		ull.append(5)
-		ull.append(6)
-		self.assertEqual(len(ull), 7)
-		del ull[-7]
-		self.assertEqual(len(ull), 6)
-		del ull[-6]
-		self.assertEqual(len(ull), 5)
-		del ull[-2]
-		self.assertEqual(len(ull), 4)
+		for i in range(20):
+			ull.append(i+1)
+		self.assertEqual(len(ull), 20)
+		del ull[-9]
+		self.assertEqual(len(ull), 19)
+		del ull[-16]
+		self.assertEqual(len(ull), 18)
+		del ull[-5]
+		self.assertEqual(len(ull), 17)
 
 	def testDelItemWithRebalanceSmall(self):
 		ull = UnrolledLinkedList()
@@ -420,137 +395,44 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		self.assertEqual(len(ull), 1)
 		self.assertEqual(ull.nodeCount, 1)
 		self.assertEqual(str(ull), '{[1]}')
-		#Clear
-		del ull[0]
 
-		#Test [2itmes]->[1item]
-		ull.append(0)
-		ull.append(1)
-		ull.append(2)
-		ull.append(3)
-		ull.append(4)
-		del ull[3]
-		del ull[3]
-		self.assertEqual(len(ull), 3)
-		del ull[1]
-		self.assertEqual(len(ull), 2)
-		self.assertEqual(ull.nodeCount, 1)
-		self.assertEqual(str(ull), '{[0, 2]}')
-		#Clear
-		del ull[0]
-		del ull[0]
-
-		#Test [2items]->[2items]
-		ull.append(0)
-		ull.append(1)
-		ull.append(2)
-		ull.append(3)
-		ull.append(4)
-		del ull[4]
-		self.assertEqual(len(ull), 4)
-		del ull[0]
-		self.assertEqual(len(ull), 3)
-		self.assertEqual(ull.nodeCount, 1)
-		self.assertEqual(str(ull), '{[1, 2, 3]}')
-		#Clear
-		del ull[0]
-		del ull[0]
-		del ull[0]
-
-		#Test [2items]->[3items]
-		ull.append(0)
-		ull.append(1)
-		ull.append(2)
-		ull.append(3)
-		ull.append(4)
-		self.assertEqual(len(ull), 5)
-		del ull[0]
-		self.assertEqual(len(ull), 4)
-		self.assertEqual(ull.nodeCount, 2)
-		self.assertEqual(str(ull), '{[1, 2, 3],[4]}')
-		#Clear
-		del ull[0]
-		del ull[0]
-		del ull[0]
-		del ull[0]
-
-		#Test [2items]->[4items]
-		ull.append(0)
-		ull.append(1)
-		ull.append(2)
-		ull.append(3)
-		ull.append(4)
-		ull.append(5)
-		self.assertEqual(len(ull), 6)
-		del ull[0]
-		self.assertEqual(len(ull), 5)
-		self.assertEqual(ull.nodeCount, 2)
-		self.assertEqual(str(ull), '{[1, 2, 3],[4, 5]}')
-		#Clear
-		del ull[0]
-		del ull[0]
-		del ull[0]
-		del ull[0]
-		del ull[0]
-
-	def testDelItemWithRebalanceLarge(self):
+		#Test 2 nodes
 		ull = UnrolledLinkedList()
-		ull.append(0)
-		ull.append(1)
-		ull.append(2)
-		ull.append(3)
-		ull.append(4)
-		ull.append(5)
-		ull.append(6)
-		ull.append(7)
-		ull.append(8)
-		ull.append(9)
-		ull.append(10)
-		self.assertEqual(len(ull), 11)
-		self.assertEqual(ull.nodeCount, 5)
-
-		#Pull one out of the middle to get combined two in the middle
-		del ull[3]
-		self.assertEqual(len(ull), 10)
-		self.assertEqual(ull.nodeCount, 4)
-		self.assertEqual(str(ull), '{[0, 1],[2, 4, 5],[6, 7],[8, 9, 10]}')
-
-		#Now delete 0 to create mutliple cases
-		#First node should grab 2 and 4 leaving the second node with just 5
-		#Second node should then grab 6 and 7
-		#Third node should then be deleted from the list
-		#Should result in 3 nodes with 3 items in each one
+		for i in range(17):
+			ull.append(i+1)
+		self.assertEqual(str(ull), '{[1, 2, 3, 4, 5, 6, 7, 8], [9, 10, 11, 12, 13, 14, 15, 16, 17]}')
 		del ull[0]
-		self.assertEqual(len(ull), 9)
-		self.assertEqual(ull.nodeCount, 3)
-		self.assertEqual(str(ull), '{[1, 2, 4],[5, 6, 7],[8, 9, 10]}')
+		self.assertEqual(str(ull), '{[2, 3, 4, 5, 6, 7, 8, 9, 10], [11, 12, 13, 14, 15, 16, 17]}')
+		del ull[0]
+		del ull[0]
+		self.assertEqual(str(ull), '{[4, 5, 6, 7, 8, 9, 10, 11, 12], [13, 14, 15, 16, 17]}')
+		del ull[7]
+		del ull[7]
+		self.assertEqual(str(ull), '{[4, 5, 6, 7, 8, 9, 10, 13, 14], [15, 16, 17]}')
+		del ull[7]
+		del ull[7]
+		self.assertEqual(str(ull), '{[4, 5, 6, 7, 8, 9, 10, 15, 16], [17]}')
+		del ull[7]
+		del ull[7]
+		self.assertEqual(str(ull), '{[4, 5, 6, 7, 8, 9, 10, 17]}')
+	
+	def testDelItemWithRebalanceLarge(self):
+		#Test 3 nodes
+		ull = UnrolledLinkedList()
+		for i in range(25):
+			ull.append(i+1)
+		self.assertEqual(str(ull), '{[1, 2, 3, 4, 5, 6, 7, 8], [9, 10, 11, 12, 13, 14, 15, 16], [17, 18, 19, 20, 21, 22, 23, 24, 25]}')
 
-		#Delete 2 and 4 and create more imbalances
-		del ull[1]
-		del ull[1]
-		self.assertEqual(len(ull), 7)
-		self.assertEqual(ull.nodeCount, 3)
-		self.assertEqual(str(ull), '{[1, 5, 6],[7, 8, 9],[10]}')
-
-		#Insert more data of all types
-		ull.append([])
-		ull.append('a')
-		ull.append('b')
-		ull.append(-5)
-		ull.append(100)
-		self.assertEqual(str(ull), '{[1, 5, 6],[7, 8, 9],[10, []],[\'a\', \'b\', -5, 100]}')
-
-		#Final test
-		#List looks like
-		#[3items]->[3items]->[2item]->[4items]
-
-		#By causing the first node to go under half full
-		#we should see that it should cause an imbalance in the second node
-		#that should then pull from a third node causing it to go empty and be removed
-
-		del ull[1]
-		del ull[1]
-		self.assertEqual(len(ull), 10)
-		self.assertEqual(ull.nodeCount, 3)
-		self.assertEqual(str(ull), '{[1, 7, 8],[9, 10, []],[\'a\', \'b\', -5, 100]}')
 		'''
+		First delete one off the first node which should cause a chain reaction
+		Start 8->8->9
+		Del one off first node
+		7->8->9
+		Should change to
+		9->6->9
+		Should change to
+		9->9->6
+		'''
+		del ull[0]
+		self.assertEqual(str(ull), '{[2, 3, 4, 5, 6, 7, 8, 9, 10], [11, 12, 13, 14, 15, 16, 17, 18, 19], [20, 21, 22, 23, 24, 25]}')
+		
