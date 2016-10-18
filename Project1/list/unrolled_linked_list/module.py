@@ -1,4 +1,5 @@
 import sys
+import math
 from ..unrolled_linked_list.LLNode import Node
 
 class UnrolledLinkedList():
@@ -103,7 +104,7 @@ class UnrolledLinkedList():
 
 	def rebalance(self, startNode):
 		temp = startNode.next
-		minSize = startNode.maxSize // 2
+		minSize = math.ceil(startNode.maxSize / 2)
 		while temp is not None:
 			if len(startNode) < minSize:
 				itemsNeeded = minSize + 1 - len(startNode)
