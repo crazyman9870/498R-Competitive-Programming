@@ -19,6 +19,7 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 	
 	#Node class unit tests
 
+	#Test that items can be added and removed from a node
 	def testNodeAddRemove(self):
 		n = Node(4)
 		self.assertEqual(n.size(), 0)
@@ -27,12 +28,14 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		n.remove()
 		self.assertEqual(n.size(), 0)
 
+	#Tests that if the node capacity has been reached that the program fails appropriately
 	@unittest.expectedFailure
 	def testNodeAddTooMany(self):
 		n = Node(4)
 		for i in range(5):
 			n.append(i+1)
 
+	#Tests removing an item from the node at a given index
 	def testNodeRemoveIndex(self):
 		n = Node(4)
 		n.add(1)
@@ -40,16 +43,19 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		n.removeIndex(0)
 		self.assertEqual(n.size(), 0)
 	
+	#Tests attempting to remove from an empty node
 	@unittest.expectedFailure
 	def testNodeRemoveEmpty(self):
 		n = Node(4)
 		n.remove()
 	
+	#Tests attempting to remove from an empty node by index
 	@unittest.expectedFailure
 	def testNodeRemoveIndexEmpty(self):
 		n = Node(4)
 		n.removeIndex(2)
 
+	#Tests attempting to remove from a node with an index out of range
 	@unittest.expectedFailure
 	def testNodeRemoveIndexRangeError(self):
 		n = Node(4)
@@ -59,6 +65,7 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		n.removeIndex(5)
 		self.assertEqual(n.size(), 2)
 
+	#Tests the is full functionaility to indicate if the node is full
 	def testNodeIsFull(self):
 		n = Node(4)
 		n.add(1)
@@ -68,6 +75,8 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		n.add(4)
 		self.assertTrue(n.isFull())
 
+	#Tests that splitting the node is done correctly
+	#There should be two lists of equal size and the rounding is done with math.ciel()
 	def testNodeSplit(self):
 		n = Node(4)
 		n.add(1)
@@ -81,24 +90,28 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		self.assertEqual(n.size(), 2)
 		self.assertEqual(len(l), 2)
 
+	#Testing adding a list of itmes into the node
 	def testNodeList(self):
 		li = [1,2,3,4]
 		n = Node(4)
 		n.addList(li)
 		self.assertEqual(n.size(), 4)
 
+	#Testing adding a list of itmes into that exceeds the max node capacity
 	@unittest.expectedFailure
 	def testNodeList(self):
 		li = [1,2,3,4,5]
 		n = Node(4)
 		n.addList(li)
 
+	#Test the __str__ function on the node and that it displays correctly
 	def testNodeStr(self):
 		li = [1,2,3]
 		n = Node(4)
 		n.addList(li)
 		self.assertEqual(str(n), str(li))
 
+	#Tests a custom remove function that removes the first x number of items in the node
 	def testNodeRemoveFirstXItems(self):
 		li = [1,2,3,4]
 		n = Node(4)
@@ -112,6 +125,8 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 
 	#Unrolled Linked List unit tests
 
+	#This test is designed to test that the ull is expanding correctly when nodes are
+	#filled to capacity and need to divide
 	def testNodeExpansion(self):
 		ull = UnrolledLinkedList()
 		#Fill first node
@@ -132,6 +147,9 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		self.assertEqual(len(ull), 25)
 		self.assertEqual(ull.nodeCount, 3)
 	
+	#This function is designed to test the getNodeIndexByIndex function
+	#This ensures that the value being returned is a tuple conatining a pointer to the node and
+	#index in which the data can be found withtin that node
 	def testGetNodeFunction(self):
 		#Test one item
 		ull = UnrolledLinkedList()
@@ -163,6 +181,7 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		tup = ull.getNodeIndexByIndex(20)
 		self.assertEqual(tup[1], 4)
 
+	#This test is the same as the one above but test negative indicies which are passed in
 	def testGetNodeFunctionNegatives(self):
 		#Test one item
 		ull = UnrolledLinkedList()
@@ -196,23 +215,27 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		tup = ull.getNodeIndexByIndex(-25)
 		self.assertEqual(tup[1], 0)
 
+	#Test the getNodeIndexByIndex function on empty list expecting failure
 	@unittest.expectedFailure
 	def testGetNodeFunctionFailEmpty(self):
 		ull = UnrolledLinkedList()
 		tup = ull.getNodeIndexByIndex(0)
 
+	#Test the getNodeIndexByIndex function with index out of bounds expecting failure
 	@unittest.expectedFailure
 	def testGetNodeFunctionFail(self):
 		ull = UnrolledLinkedList()
 		ull.append(1)
 		tup = ull.getNodeIndexByIndex(1)
 
+	#Test the getNodeIndexByIndex function with negative index out of bounds expecting failure
 	@unittest.expectedFailure
 	def testGetNodeFunctionFailNegative(self):
 		ull = UnrolledLinkedList()
 		ull.append(1)
 		tup = ull.getNodeIndexByIndex(-2)
 	
+	#Test the __getitem__ functionality with positive integers
 	def testGetItem(self):
 		ull = UnrolledLinkedList()
 		for i in range(25):
@@ -230,6 +253,7 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		item = ull[24]
 		self.assertEqual(item, 25)
 
+	#Test the __getitem__ functionality with negative integers
 	def testGetItemNegative(self):
 		ull = UnrolledLinkedList()
 		for i in range(25):
@@ -243,23 +267,27 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		item = ull[-16]
 		self.assertEqual(item, 10)
 
+	#Test the __getitem__ functionality on empty list
 	@unittest.expectedFailure
 	def testGetItemFailEmpty(self):
 		ull = UnrolledLinkedList()
 		item = ull[0]
 
+	#Test the __getitem__ functionality with index out of bounds
 	@unittest.expectedFailure
 	def testGetItemFail(self):
 		ull = UnrolledLinkedList()
 		ull.append(1)
 		item = ull[1]
 
+	#Test the __getitem__ functionality with negative index out of bounds
 	@unittest.expectedFailure
 	def testGetItemFailNegative(self):
 		ull = UnrolledLinkedList()
 		ull.append(1)
 		item = ull[-2]
 
+	#Test the __setitem__ functionality replacing values with all sorts of information
 	def testSetItem(self):
 		ull = UnrolledLinkedList()
 		for i in range(20):
@@ -273,6 +301,7 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		ull[-13] = -15.5
 		self.assertEqual(str(ull), '{[100, 2, 3, 4, 5, 6, 7, -15.5], [333, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, \'A\']}')
 
+	#Testing the contains function on the list
 	def testContains(self):
 		ull = UnrolledLinkedList()
 		for i in range(20):
@@ -283,6 +312,7 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		self.assertTrue(16 in ull)
 		self.assertFalse(21 in ull)
 
+	#Testing the custom private function inRange
 	def testInRange(self):
 		ull = UnrolledLinkedList()
 		self.assertTrue(ull.inRange(1,3,2))
@@ -292,6 +322,7 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		self.assertFalse(ull.inRange(1,3,-1))
 		self.assertFalse(ull.inRange(1,3,5))
 
+	#Testing the reversed iter functionality 
 	def testReversed(self):
 		ull = UnrolledLinkedList()
 		for i in range(25):
@@ -301,6 +332,7 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 			testing.append(x)
 		self.assertEqual(str(testing), '[25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]')
 
+	#Testing the iter functionality
 	def testIter(self):
 		ull = UnrolledLinkedList()
 		for i in range(25):
@@ -310,11 +342,13 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 			testing.append(x)
 		self.assertEqual(str(testing), '[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]')
 
+	#Testing __delitem__ on empty list
 	@unittest.expectedFailure
 	def testDelItemEmpty(self):
 		ull = UnrolledLinkedList()
 		del ull[0]
 	
+	#Testing __delitem__ with index out of bounds
 	@unittest.expectedFailure
 	def testDelItemIndexError(self):
 		ull = UnrolledLinkedList()
@@ -324,6 +358,7 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		del ull[5]
 		del ull[5]
 
+	#Testing __delitem__ with random indicies
 	def testDelItemListSize(self):
 		ull = UnrolledLinkedList()
 		for i in range(20):
@@ -336,6 +371,7 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		del ull[2]
 		self.assertEqual(len(ull), 17)
 
+	#Testing __delitem__ with random negative indicies
 	def testDelItemListSizeNegative(self):
 		ull = UnrolledLinkedList()
 		for i in range(20):
@@ -348,6 +384,8 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		del ull[-5]
 		self.assertEqual(len(ull), 17)
 
+	#Testing rebalancing after __delitem__  that would cause multiple different cases
+	#Primarily done with two largish nodes
 	def testDelItemWithRebalanceSmall(self):
 		ull = UnrolledLinkedList()
 		#Test 1 item in list
@@ -385,6 +423,9 @@ class UnrolledLinkedList_Test(unittest.TestCase):
 		del ull[7]
 		self.assertEqual(str(ull), '{[4, 5, 6, 7, 8, 9, 10, 17]}')
 	
+	#Testing rebalancing after __delitem__  that would cause multiple different cases
+	#Focus on creating a list that the deletion would cause a chain reaction to the rebalancing
+	#multiple nodes
 	def testDelItemWithRebalanceLarge(self):
 		#Test 3 nodes
 		ull = UnrolledLinkedList()
