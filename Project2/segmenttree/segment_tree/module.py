@@ -32,7 +32,7 @@ class SegmentTreeNode():
 
 
 class SegmentTree(object):
-
+	
 	'''
 	SegmentTree Constructor
 	size = size of the list
@@ -98,3 +98,4 @@ class SegmentTreeMax(object):
 class SegmentTreeScheduler(object):
 	def __init__(self, size):
 		self.size = size
+
